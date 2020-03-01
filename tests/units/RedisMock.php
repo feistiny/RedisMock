@@ -525,6 +525,20 @@ class RedisMock extends test
             ->isEqualTo(['c']);
     }
 
+    public function testSunion()
+    {
+        $redisMock = new Redis();
+        $redisMock->sadd('key1', 'a1');
+        $redisMock->sadd('key2', 'b1', 'b2');
+        $redisMock->sadd('key3', 'c1', 'c2', 'c3');
+
+        $this->assert
+            ->array($redisMock->sunion('key1', 'key2', 'key3'))
+            ->isEqualTo(['a1', 'b1', 'b2', 'c1', 'c2', 'c3'])
+            ->integer($redisMock->sunionstore('key_store', ['key1', 'key2', 'key3']))
+            ->isEqualTo(6);
+    }
+
     public function testSAddSMembersSIsMemberSRem()
     {
         $redisMock = new Redis();

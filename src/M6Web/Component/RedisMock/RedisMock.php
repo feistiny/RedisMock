@@ -395,6 +395,13 @@ class RedisMock
         return $this->returnPipedInfo($result);
     }
 
+    public function sunionstore($destination, $keys)
+    {
+        $union = $this->sunion($keys);
+        $this->del($destination);
+        return $this->sadd($destination, $union);
+    }
+
     public function sinter($key)
     {
         $this->stopPipeline();
